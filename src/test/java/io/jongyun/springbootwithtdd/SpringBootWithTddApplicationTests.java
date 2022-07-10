@@ -1,10 +1,14 @@
 package io.jongyun.springbootwithtdd;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import io.jongyun.springbootwithtdd.models.CollegeStudent;
 import io.jongyun.springbootwithtdd.models.StudentGrades;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SpringBootWithTddApplicationTests {
 
   private static int count = 0;
+  @Autowired CollegeStudent student;
+  @Autowired StudentGrades studentGrades;
 
   @Value("${info.app.name}")
   private String appInfo;
@@ -27,10 +33,6 @@ class SpringBootWithTddApplicationTests {
 
   @Value("${info.school.name}")
   private String schoolName;
-
-  @Autowired CollegeStudent student;
-
-  @Autowired StudentGrades studentGrades;
 
   @BeforeEach
   public void beforeEach() {
@@ -51,6 +53,21 @@ class SpringBootWithTddApplicationTests {
     student.setStudentGrades(studentGrades);
   }
 
+  @DisplayName("Add grade results for student grades")
   @Test
-  void basicTest() {}
+  public void addGradeResultsForStudentGrades() {
+    assertEquals(
+        353.25,
+        studentGrades.addGradeResultsForSingleClass(
+            student.getStudentGrades().getMathGradeResults()));
+  }
+
+  @DisplayName("Add grade results for student grades not equal")
+  @Test
+  public void addGradeResultsForStudentGradesAssertNotEquals() {
+    assertNotEquals(
+        0,
+        studentGrades.addGradeResultsForSingleClass(
+            student.getStudentGrades().getMathGradeResults()));
+  }
 }

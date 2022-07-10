@@ -1,7 +1,10 @@
 package io.jongyun.springbootwithtdd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.jongyun.springbootwithtdd.models.CollegeStudent;
 import io.jongyun.springbootwithtdd.models.StudentGrades;
@@ -69,5 +72,25 @@ class SpringBootWithTddApplicationTests {
         0,
         studentGrades.addGradeResultsForSingleClass(
             student.getStudentGrades().getMathGradeResults()));
+  }
+
+  @DisplayName("Is grade greater")
+  @Test
+  public void isGradeGreaterStudentGrades() {
+    assertTrue(studentGrades.isGradeGreater(90, 75), "failure - should be ture");
+  }
+
+  @DisplayName("Is grade greater false")
+  @Test
+  public void isGradeGreaterStudentGradesAssertFalse() {
+    assertFalse(studentGrades.isGradeGreater(89, 92), "failure - should be false");
+  }
+
+  @DisplayName("Check Null for student grades")
+  @Test
+  public void checkNullForStudentGrades() {
+    assertNotNull(
+        studentGrades.checkNull(student.getStudentGrades().getMathGradeResults()),
+        "object should not be null");
   }
 }

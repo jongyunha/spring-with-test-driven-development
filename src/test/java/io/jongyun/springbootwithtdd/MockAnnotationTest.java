@@ -1,6 +1,7 @@
 package io.jongyun.springbootwithtdd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -80,6 +81,14 @@ public class MockAnnotationTest {
         verify(applicationDaoV2).findGradePointAverage(studentGrades.getMathGradeResults());
         verify(applicationDaoV2, times(1)).findGradePointAverage(
             studentGrades.getMathGradeResults());
+    }
+
+    @DisplayName("Not null")
+    @Test
+    void testAssertNotNull() {
+        when(applicationDaoV2.checkNull(studentGrades.getMathGradeResults())).thenReturn(true);
+
+        assertNotNull(applicationServiceV2.checkNull(studentGrades.getMathGradeResults()));
     }
 
 }

@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -33,10 +34,13 @@ public class MockAnnotationTest {
     @Autowired
     StudentGrades studentGrades;
 
-    @Mock
+    //    @Mock -> @MockBean 주어진 bean 을 주입합니다.
+    @MockBean
     private ApplicationDaoV2 applicationDaoV2;
 
-    @InjectMocks
+    //    @InjectMocks -> @Autowired
+    // MockBean 을 사용함으로 인해서 Application context 에서 bean 이 등록되어 있으므로 의존성 주입이 가능해짐
+    @Autowired
     private ApplicationServiceV2 applicationServiceV2;
 
     @BeforeEach
@@ -61,6 +65,20 @@ public class MockAnnotationTest {
 
         // 이 method 가 몇번 호출되었는지 검증
         verify(applicationDaoV2, times(1)).addGradeResultsForSingleClass(
+            studentGrades.getMathGradeResults());
+    }
+
+    @DisplayName("Find Gpa")
+    @Test
+    void assertEqualsTestFindGpa() {
+        when(applicationDaoV2.findGradePointAverage(studentGrades.getMathGradeResults()))
+            .thenReturn(88.31);
+
+        assertEquals(88.31, applicationServiceV2
+            .findGradePointAverage(studentOne.getStudentGrades().getMathGradeResults()));
+
+        verify(applicationDaoV2).findGradePointAverage(studentGrades.getMathGradeResults());
+        verify(applicationDaoV2, times(1)).findGradePointAverage(
             studentGrades.getMathGradeResults());
     }
 
